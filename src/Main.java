@@ -1,8 +1,27 @@
-void main() {
-    IO.println(String.format("Hello and welcome!"));
+public class Main {
+    public static void main(String[] args) {
+        GreenFeedPlayer feed = new GreenFeedPlayer();
+        int totalElementos = 1_000_000;
 
-    for (int i = 1; i <= 5; i++) {
+        System.out.println("Cargando " + totalElementos + " contenidos...");
+        for (int i = 1; i <= totalElementos; i++) {
+            feed.agregarAlFeed(new Contenido("Video " + i, 60, "1080p"));
+        }
 
-        IO.println("i = " + i);
+        for (int i = 0; i < 999_999; i++) {
+            feed.siguienteVideo();
+        }
+
+        System.out.println("--- Inicio de Simulación de Retroceso ---");
+
+        long inicioO1 = System.nanoTime();
+        Contenido anterior = feed.videoAnterior();
+        long finO1 = System.nanoTime();
+
+        if (anterior != null) {
+            System.out.println("Retrocedimos: " + anterior.titulo);
+            System.out.println("Tiempo en O(1) con puntero 'anterior': " + (finO1 - inicioO1) + " nanosegundos.");
+        }
+
     }
 }
